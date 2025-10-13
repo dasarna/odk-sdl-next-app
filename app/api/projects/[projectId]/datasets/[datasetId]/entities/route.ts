@@ -24,7 +24,7 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
       `${ODK_CENTRAL_URL}/v1/projects/${projectId}/forms/${datasetId}.svc/Submissions`,
       {
         headers: { Authorization: authHeader },
-        params: { $select: '__id,__system/reviewState,G6/Q9_5', $top: 10 },
+        params: { $select: '__id,__system/reviewState,G6/Q9_5', $top: 20 },
       }
     );
     console.log('ODK Response:', response.data);
