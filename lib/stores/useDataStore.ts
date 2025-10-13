@@ -42,7 +42,7 @@ export const useDataStore = create<DataState>((set, get) => {
       }
       try {
         const response = await axios.get('/api/projects', {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${token}` }, // test for github
           params: {}, // Limit to 10 projects
         });
         console.log('Projects fetched:', response.data.length, response.data.map((p: Project) => ({ id: p.id, name: p.name })));
