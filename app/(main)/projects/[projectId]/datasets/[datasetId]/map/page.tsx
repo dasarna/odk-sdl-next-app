@@ -20,7 +20,7 @@ const customIcon = L.icon({
 const transparentIcon = L.divIcon({
   className: 'custom-marker',
   iconSize: [16, 16],
-  html: '<div style="background-color: orange; width: 16px; height: 16px; border-radius: 50%; border: 2px solid white;"></div>',
+  html: '<div style="background-color: rgba(255, 0, 0, 0.5); width: 16px; height: 16px; border-radius: 50%;"></div>',
 });
 
 // Default icon (fallback, ensure shadow path is correct)
@@ -37,7 +37,7 @@ const defaultIcon = L.icon({
 const createClusterCustomIcon = (cluster: { getChildCount: () => any; }) => {
   const count = cluster.getChildCount();
   return L.divIcon({
-    html: `<div style="background-color: orange; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; border: 2px solid white;">${count}</div>`,
+    html: `<div style="background-color: rgba(255, 0, 0, 0.5); width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; border: 2px solid white;">${count}</div>`,
     className: 'custom-cluster-marker',
     iconSize: [24, 24],
   });
