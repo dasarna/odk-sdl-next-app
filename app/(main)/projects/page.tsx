@@ -97,6 +97,10 @@ export default function Projects() {
     router.push(`/projects/${projectId}/datasets/${datasetId}/map`);
   };
 
+  const handleDataView = (projectId: number, datasetId: string) => {
+    router.push(`/projects/${projectId}/datasets/${datasetId}/data_table`);
+  };
+
   const toggleCollapsible = (projectId: number) => {
     setOpenProjects((prev) => ({
       ...prev,
@@ -140,7 +144,7 @@ export default function Projects() {
                             data-sentry-source-file="project.$ref.tsx"
                             className="group relative text-left bg-surface-100 border border-surface rounded-md p-5 flex flex-row transition ease-in-out duration-150 cursor-pointer hover:bg-surface-200 hover:border-control min-h-32 md:min-h-44 h-44 !px-0 pt-5 pb-0"
                             data-sentry-component="ProjectIndexPageLink"
-                            onClick={() => handleMapView(project.id, dataset.datasetId)}
+                            onClick={() => handleDataView(project.id, dataset.datasetId)}
                           >
                             <div className="flex h-full w-full flex-col space-y-2">
                               <div className="w-full justify-between space-y-1.5 px-5">

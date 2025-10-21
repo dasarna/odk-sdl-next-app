@@ -11,15 +11,26 @@ type SubmissionCounts = {
   rejected: number;
   approved: number;
 }
-
+type Submission = any; // Your ODK submission object
 
 type DataState = {
   projects: Project[];
   geoPoints: GeoPoint[];
   submissionCounts: SubmissionCounts; // Keyed by formId
+
+  // NEW: Full submissions support
+  submissions: Submission[];
+  submissionsLoading: boolean;
+  geoPointsAvailable: boolean;
+  geoPointPath: string;
+
   fetchProjects: () => Promise<void>;
   fetchGeoPoints: (projectId: number, datasetId: string) => Promise<void>;
   fetchSubmissionCounts: (projectId: number, formId: string) => Promise<void>;
+
+  // NEW: Fetch ALL submissions
+  fetchAllSubmissions: (projectId: number, datasetId: string) => Promise<void>;
+  clearSubmissions: () => void;
 };
 
 export const useDataStore = create<DataState>((set, get) => {
@@ -29,6 +40,13 @@ export const useDataStore = create<DataState>((set, get) => {
     projects: [],
     geoPoints: [],
     submissionCounts: {id:'',total:0,edited:0,rejected:0,approved:0},
+
+    // NEW: Full submissions state
+    submissions: [],
+    geoPointsAvailable: false,
+    submissionsLoading: false,
+    geoPointPath:'',
+
     fetchProjects: async () => {
       if (cache.projects) {
         set({ projects: cache.projects });
@@ -119,5 +137,33 @@ export const useDataStore = create<DataState>((set, get) => {
         set({ submissionCounts: { ...get().submissionCounts, [formId]: { id:'', total: 0, edited: 0, rejected: 0, approved: 0 } } });
       }
     },
+    // NEW: Fetch ALL submissions (reuses same endpoint)
+    fetchAllSubmissions: async (projectId, datasetId) => {
+      const token = typeof window !== 'undefined' ? localStorage.getItem('odk-token') : null;
+      if (!token) {
+        console.error('No token found');
+        set({ submissions: [], submissionsLoading: false });
+        return;
+      }
+      set({ submissionsLoading: true });
+      try {
+        const response = await axios.get(`/api/projects/${projectId}/datasets/${datasetId}/submissions`, {
+          headers: { Authorization: `Bearer ${token}` },
+          params: { }, // Get ALL (increase as needed)
+        });
+        console.log(`ALL submissions fetched for ${datasetId}:`, response.data.length);
+        set({ 
+          submissions: response.data.submissions, 
+          geoPointsAvailable: response.data.geoPointsAvailable,
+          geoPointPath: response.data.geoPointPath,
+          submissionsLoading: false 
+        });
+      } catch (err: any) {
+        console.error('Error fetching all submissions:', err.message);
+        set({ submissions: [], submissionsLoading: false });
+      }
+    },
+    // NEW: Clear submissions
+    clearSubmissions: () => set({ submissions: [] }),
   };
 });

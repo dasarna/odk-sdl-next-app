@@ -15,7 +15,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
         <Sidebar />
 
         {/* Main content: Offset by sidebar width */}
-        <main className="flex-1 ml-16 p-6">{children}</main>
+        <main className="flex-1 ml-16">{children}</main>
       </div>
     </div>
   );

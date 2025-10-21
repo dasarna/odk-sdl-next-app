@@ -50,7 +50,7 @@ interface GeoPoint {
   lon: number;
 }
 
-export default function MapView() {
+export default function MapView() { 
   const { projectId, datasetId } = useParams();
   const geoPoints = useDataStore((state) => state.geoPoints);
   const fetchGeoPoints = useDataStore((state) => state.fetchGeoPoints);

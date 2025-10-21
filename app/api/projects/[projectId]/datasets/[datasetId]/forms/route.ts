@@ -22,7 +22,7 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
     }
     const response = await axios.get(
       `${ODK_CENTRAL_URL}/v1/projects/${projectId}/forms/${datasetId}/submissions`,
-      {
+      { 
         headers: { Authorization: authHeader },
         params: { $select: 'instanceId,reviewState' },
       }
